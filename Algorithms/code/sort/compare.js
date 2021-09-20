@@ -1,4 +1,4 @@
-const gen = require('./share');
+const gen = require('../share');
 const Sort = require('./sort');
 
 const type = ['xzSort', 'crSort'];

@@ -1,6 +1,6 @@
 const assert = require('assert');
 const Sort = require('./sort');
-const gen = require('./share');
+const gen = require('../share');
 
 
 const a = gen(50);
