@@ -13,28 +13,28 @@ var ST = (function() {
     ST.prototype.get = function() {}
 
     // 从表中删除 key
-    ST.prototype.delete = function() {}
+    ST.prototype.delete = function() {
+        this.put(key, null);
+    }
 
     // 键 key 在表中是否有对应的值
-    ST.prototype.contains = function() {}
+    ST.prototype.contains = function() {
+        return this.get(key) != null;
+    }
 
     // 是否为空
     ST.prototype.isEmpty = function(v, w) {
-        return (this.arr[v] <= this.arr[w]);
+        return this.size() == 0;
     }
 
     // 键值对的数量
     ST.prototype.size = function(i, j) {
-        let t = this.arr[i];
-        this.arr[i] = this.arr[j];
-        this.arr[j] = t;
+       
     }
 
     // 表中所有键的集合
     ST.prototype.keys = function(i, j) {
-        let t = this.arr[i];
-        this.arr[i] = this.arr[j];
-        this.arr[j] = t;
+       
     }
 
     return ST;
