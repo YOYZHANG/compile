@@ -1,4 +1,3 @@
-// 符号表
 var ST = (function() {
     function ST(max) {
         this.m = max;
