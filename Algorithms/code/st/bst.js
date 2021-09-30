@@ -15,7 +15,30 @@ var Node = (function() {
 
 var BST = (function() {
     function BST() {
-        this.root = new Node();
+        this.root = null;
+        this.arr = [];
+    }
+
+    // print
+    BST.prototype.print = function() {
+        this.printNode(this.root);
+        // return JSON.stringify(this.arr, null, 2);
+        return this.arr;
+    }
+
+    BST.prototype.printNode = function(node) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.left) {
+            this.printNode(node.left);
+        }
+        this.arr.push(node.key);
+
+        if (node.right) {
+            this.printNode(node.right);
+        }
     }
 
     // 将键值存入表中
@@ -32,22 +55,27 @@ var BST = (function() {
         let cmp = key - node.key;
 
         if (cmp < 0) {
-            node.left = this.put(node.left, key, val);
+            node.left = this.putNode(node.left, key, val);
         }
         else if (cmp > 0) {
-            node.right = this.put(node.right, key, val);
+            node.right = this.putNode(node.right, key, val);
         }
         else {
             node.val = val;
         }
 
-        node.n = this.size(node.left) + this.size(node.right) + 1;
+        node.n = this.nodeSize(node.left) + this.nodeSize(node.right) + 1;
 
         return node;
     }
 
     // 获取键值对应的 key
-    BST.prototype.get = function(node, key) {
+    BST.prototype.get = function(key) {
+        return this.getNode(this.root, key);
+    }
+
+    // 获取键值对应的 key
+    BST.prototype.getNode = function(node, key) {
         // 在以 x 为根结点的子树中查找并返回 key 所对应的值
         // 如果找不到则返回 null
         if (node == null) {
@@ -57,28 +85,15 @@ var BST = (function() {
         const cmp = key - node.key;
         
         if (cmp < 0) {
-            return this.get(node.left, key);
+            return this.getNode(node.left, key);
         }
         else if (cmp > 0) {
-            return this.get(node.right, key);
+            return this.getNode(node.right, key);
         }
         else {
             return node.val;
         }
     }
-
-    // // 从表中删除 key
-    // BST.prototype.delete = function() {
-    // }
-
-    // // 键 key 在表中是否有对应的值
-    // BST.prototype.contains = function() {
-    // }
-
-    // // 是否为空
-    // BST.prototype.isEmpty = function(v, w) {
-    //     return this.size() == 0;
-    // }
 
     // 键值对的数量
     BST.prototype.size = function() {
@@ -90,7 +105,7 @@ var BST = (function() {
            return 0;
        }
 
-       return node.n;
+       return +node.n;
     }
 
     // 表中所有键的集合
@@ -100,7 +115,7 @@ var BST = (function() {
 
     // 最小的键
     BST.prototype.min = function() {
-        return this.min(this.root).key;
+        return this.minNode(this.root).key;
     }
 
     BST.prototype.minNode = function(node) {
@@ -108,12 +123,12 @@ var BST = (function() {
             return node;
         }
 
-        return this.min(node.left);
+        return this.minNode(node.left);
     }
 
     // 最大的键
     BST.prototype.max = function() {
-        return this.maxNode(this.root);
+        return this.maxNode(this.root).key;
     }
 
     // 最大的键
@@ -210,9 +225,39 @@ var BST = (function() {
         }
     }
 
-    // 删除最大键
     BST.prototype.delete = function(key) {
-    
+        return this.deleteNode(key, this.root);
+    }
+
+    // 删除键
+    BST.prototype.deleteNode = function(key, node) {
+        if (node == null) {
+            return;
+        }
+
+        let cmp = key - node.key;
+        if (cmp < 0) {
+            node.left = ths.deleteNode(key, node.left);
+        }
+        else if (cmp > 0) {
+            node.right = this.deleteNode(key, node.right);
+        }
+        else {
+            if (node.right == null) {
+                return node.left;
+            }
+
+            if (node.left == null) {
+                return node.right;
+            }
+
+            let t = node;
+            node = this.minNode(t.right);
+            node.right = this.deleteMinNode(t.right);
+            node.left = t.left;
+        }
+        node.n = this.nodeSize(node.left) + this.nodeSize(node.right) + 1;
+        return node;
     }
 
     // 删除最大键
@@ -221,18 +266,22 @@ var BST = (function() {
     }
 
     // 删除最小键
-    BST.prototype.deleteMin = function(key, node) {
+    BST.prototype.deleteMinNode = function(node) {
         // 需不断深入左子树，直到遇见一个空链接，然后将指向改节点的链接指向该节点的
         if (node.left == null) {
             return node.right;
         }
+        
+        node.left = this.deleteMinNode(node.left);
+        node.n = this.size(node.left) + this.size(node.right) + 1;
+        return node;
+    }
 
-        node.left = this.deleteMin(node.left);
-        node.n = this.size(node.left) + this
+    BST.prototype.deleteMin = function() {
+       return this.deleteMinNode(this.root)
     }
 
     return BST;
 })();
 
 module.exports = BST;
-// ddds

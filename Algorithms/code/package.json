@@ -4,7 +4,7 @@
   "description": "",
   "main": "sort.js",
   "scripts": {
-    "test": "node MaxPQ/test.js"
+    "test": "node st/test.js"
   },
   "author": "",
   "license": "ISC",
